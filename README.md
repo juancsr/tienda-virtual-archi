@@ -17,6 +17,8 @@ Ejercicio de ADLs con tienda virtual
 * Como un gerente, quiero reportes de los articulos más vendidos al mes
 * Como un gerente, quiero poder enviar mensajes a diferentes trabajadores que tengo a mi cargo
 * Como un gerente, quiero poder asignar objetivos mensuales, trimestrales y anuales
+* Como un gerente, quiero poder ver ingresos y egresos de la tienda
+* Como un gerente, quiero medir el rendimiento del vendedor
 
 ### Vendedor
 
@@ -24,7 +26,8 @@ Ejercicio de ADLs con tienda virtual
 * Como un vendedor, quiero poder establecer descuentos a mis productos por un tiempo limitado
 * Como un vendedor, quiero tener la opción de seleccionar servicios de envio para entregar mis productos
 * Como un vendedor, quiero habilitar y deshabilitar los estados de mis productos
-* Como un vendedor, quiero poder clasificar mis productos así puedo facilitar opciones de venta
+* Como un vendedor, quiero poder clasificar mis productos así puedo facilitar opciones de venta, inventario
+* Como vendededot, quiero ver los catalogos de los productos que ofrecen los proveedores
 
 ### Cliente
 
@@ -39,10 +42,12 @@ Ejercicio de ADLs con tienda virtual
 ### Proveedor
 
 * Como un proveedor, quiero poder comunicarme con los vendedores
+* Como proveedor, quiero poder mostrar mis productos a los clientes
+* como proveedor, quiero ver los pedidos realizados por la tienda y poder hacer seguimiento de estos
 
 ### Mensajero
 
 * Como un mensajero, quiero un mapa que me indique a dónde debo hacer entregas
 * Como un mensajero, quiero notificaciones de las nuevas entregas que debo hacer
-* Como un mensajero, quiero poder enviar y recibir mensajes con el comprador del producto
+* Como un mensajero, quiero poder enviar y recibir mensajes con el comprador del producto y el vendedor
 
