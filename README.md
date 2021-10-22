@@ -47,6 +47,7 @@ Ejercicio de ADLs con tienda virtual
 * Como proveedor, quiero poder mostrar mis productos a los clientes
 * como proveedor, quiero ver los pedidos realizados por la tienda y poder hacer seguimiento de estos.
 * como proveedor, quiero poder ver los estados de las facturas emitidas a mi cliente (Tienda)
+* como proveedor, quiero poder generar informacion de retenciones y demas informacion contable de manera autonoma.
 
 ### Mensajero
 
