@@ -1,6 +1,12 @@
 # tienda-virtual-archi
 Ejercicio de ADLs con tienda virtual
 
+## Integrantes
+* Juan Camilo Sarmiento Reyes, Cod. 20152020067
+* Andres RAmirez, Cod. 20161020077
+* Diana Muñoz, Cod. 202120902
+* Juan Verano, Cod. 2021209026
+
 ## Roles propuestos
 
 * Gerente
