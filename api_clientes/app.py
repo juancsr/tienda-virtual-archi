@@ -1,12 +1,13 @@
 from flask import Flask, jsonify, request
 from users import clients
+import os
 import mysql.connector
 
 mydb = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  password="andres",
-  database="clients"
+  host=os.environ['DB_HOST'],
+  user=os.environ['DB_USER'],
+  password=os.environ['DB_PASSWORD'],
+  database=os.environ['DB_NAME']
 )
 
 app = Flask(__name__)
