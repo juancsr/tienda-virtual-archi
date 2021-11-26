@@ -8,10 +8,31 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
       - "80:80"
+    depends_on:
+      - apiClientes
     
   apiClientes:
     build: ./api_clientes
     container_name: api_clientes
+    image: api_clientes
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=andres
+      - DB_PASSWORD=andres
+      - DB_NAME=clientes
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_USER: andres
+      MYSQL_PASSWORD: andres
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: clientes
+    volumes:
+      - "./api_clientes/users.sql:/docker-entrypoint-initdb.d/1.sql"
     image: api_clientes
 
     

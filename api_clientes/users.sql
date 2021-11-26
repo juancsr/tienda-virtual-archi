@@ -1,5 +1,5 @@
-create database clients;
-use clients;
+-- create database clientes;
+use clientes;
 
 create table city(
     id int(3),

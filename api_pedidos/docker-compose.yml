@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  db:
+    image: mongo:latest
+    container_name: mongodb_backend_develop
+    environment: 
+      - MONGO_DATA_DIR=/data/db:ro
+      - MONGO_LOG_DIR=/var/log/mongodb
+      - MONGO_INITDB_ROOT_USERNAME=pedidos
+      - MONGO_INITDB_ROOT_PASSWORD=pedidos
+      - MONGO_INITDB_DATABASE=pedidos
+    ports:
+      - 27015:27017
+    networks: 
+      - back_end
+  
+  # mongo-express:
+  #   image: mongo-express
+  #   restart: always
+  #   ports:
+  #     - 8083:8081
+  #   environment:
+  #     ME_CONFIG_MONGODB_ADMINUSERNAME: pedidos
+  #     ME_CONFIG_MONGODB_ADMINPASSWORD: pedidos
+  #     ME_CONFIG_MONGODB_URL: mongodb://pedidos:pedidos@mongodb_backend_develop:27017/
+
+  api:
+    build: .
+    container_name: api_pedidos_dev
+    ports:
+      - 4001:4000
+    depends_on:
+      - db
+    networks:
+      - back_end
+      
+networks: 
+  back_end:
+    external: true
