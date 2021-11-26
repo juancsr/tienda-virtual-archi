@@ -1,24 +1,35 @@
 from flask import Flask, request, jsonify, Response
+import requests as req
 from db import initialize_db
 from models import Pedido
+import os
 
 app = Flask(__name__)
 
+api_clientes_url = os.environ['API_CLIENTES_URL']
+api_productos_url = os.environ['API_PRODUCTOS_URL']
+
 app.config['MONGODB_SETTINGS'] = {
-    'db': 'pedidos',
-    'host': 'mongodb_backend_develop',
-    'port': 27017,
-    'username':'pedidos',
-    'password':'pedidos',
-    'authentication_source': 'admin'
-    
+    'db': os.environ['DB_NAME'],
+    'host': os.environ['DB_HOST'],
+    'port': int(os.environ['DB_PORT']),
+    'username': os.environ['DB_USERNAME'],
+    'password': os.environ['DB_PASSWORD'],
+    'authentication_source': os.environ['DB_AUTH']
 }
 
 initialize_db(app)
 
-@app.route('/<int:idCliente>', methods=['GET'])
+@app.route('/cliente/<int:idCliente>', methods=['GET'])
 def getPedidoByIdCliente(idCliente):
     pedido = Pedido.objects.get(cliente_id=idCliente).to_json()
+    # TODO: Do client request
+    # https://stackoverflow.com/questions/6386308/http-requests-and-json-parsing-in-python
+    # pedido = Pedido.objects.get(cliente_id=idCliente).to_mongo().to_dict()
+    # print(pedido)
+    # r = req.get('{}/{}'.format(api_clientes_url, idCliente))
+    # print(r.json())
+    # pedido.cliente_id = r.json()
     return Response(pedido, mimetype="application/json", status=200)
 
 @app.route('/', methods=['POST'])
