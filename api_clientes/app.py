@@ -1,20 +1,67 @@
 from flask import Flask, jsonify, request
 from users import clients
+import mysql.connector
+
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  password="andres",
+  database="clients"
+)
 
 app = Flask(__name__)
+
+def getAllClients():
+    mycursor = mydb.cursor()
+    mycursor.execute("select u.id, u.name, u.lastname, u.email, c.name as city, p.number, cl.shippingQuantity, a.address from user u inner join city c on u.id_city=c.id inner join phone_numbers p on u.id=p.id inner join client cl on u.id=cl.client_id inner join addresses a on cl.client_id=a.id;")
+    myresult = mycursor.fetchall()
+    return myresult
+
+Cls=getAllClients()
+
+def format(results, id):
+    Client = {
+                    "id": "",
+                    "name": "",
+                    "surname": "",
+                    "email": "",
+                    "city": "",
+                    "shippingQuantity": "",
+                    "phone": "",
+                    "address":""
+                }
+    for result in results:
+        if result[0] == id:
+            if Client['id']==id:
+                if Client['phone']['0']==result[5]:
+                    Client['address'][str(len(Client['address']))]=result[7]
+                else:
+                    Client['phone'][str(len(Client['phone']))]=result[5]
+            else:
+                Client = {
+                    "id": result[0],
+                    "name": result[1],
+                    "surname": result[2],
+                    "email": result[3],
+                    "city":result[4],
+                    "shippingQuantity":result[6],
+                    "phone":{"0":result[5]},
+                    "address":{"0":result[7]}
+                }
+    return Client
 
 #READ
 @app.route('/')
 def getClients():
-    return jsonify({"Clients":clients})
+    cl=[format(Cls,id) for id in set([c[0] for c in Cls])]
+    return jsonify({"Clients":cl})
 
 @app.route('/<int:id>')
 def getClient(id):
-    clientFound = [client for client in clients if client['id']==id]
-    if len(clientFound) > 0:
-        return jsonify({"message":"client found", "Client":clientFound[0]})
+    cl=format(Cls,id)
+    if cl["id"]!="":
+        return jsonify({"message":"client found", "Client":cl})
     return jsonify({"message":"client not found"})
-
 
 #CREATE
 @app.route("/clients", methods=['POST'])
