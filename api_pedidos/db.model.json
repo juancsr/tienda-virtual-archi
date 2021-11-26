@@ -1,0 +1,15 @@
+{
+    "uid": "str",
+    "codigo": "str",
+    "cliente_id": 1,
+    "productos": [
+        {
+            "id": 1,
+            "cantidad": 20
+        },
+        {
+            "id": 2,
+            "cantidad": 30
+        }
+    ]
+}
