@@ -12,6 +12,7 @@ services:
     depends_on:
       - api_clientes
       - api_pedidos
+      - api_productos
     
   api_clientes:
     build: ./api_clientes
@@ -68,3 +69,12 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=pedidos
       - MONGO_INITDB_ROOT_PASSWORD=pedidos
       - MONGO_INITDB_DATABASE=pedidos
+  api_productos:
+    image: nodejs
+    build: ./api_productos
+    container_name: api_productos
+    ports: 
+      - 3000:3000  
+    command: npm run dev
+    
+
