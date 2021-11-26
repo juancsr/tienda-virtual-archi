@@ -13,3 +13,5 @@ services:
     build: ./api_clientes
     container_name: api_clientes
     image: api_clientes
+
+    

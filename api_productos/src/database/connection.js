@@ -2,9 +2,9 @@ import sql from "mssql";
 import config from "../config";
 
 export const dbSettings = {
-  user: "fast",
-  password: "Diana9105*",
-  server: "ASW3921",
+  user: "testSa",
+  password: "S3cur1t4s+2020.",
+  server: "srvdesarrollo",
   database: "webstore",
   options: {
     encrypt: true, // for azure
