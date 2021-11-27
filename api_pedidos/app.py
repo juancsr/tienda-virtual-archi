@@ -21,16 +21,27 @@ app.config['MONGODB_SETTINGS'] = {
 
 initialize_db(app)
 
-def info_cliente(idCliente: int) -> object:
-    r = req.get('{}/{}'.format(api_clientes_url, idCliente))
+def info_cliente(id_cliente: int) -> object:
+    r = req.get('{}/{}'.format(api_clientes_url, id_cliente))
     cliente = r.json()['Client']
     return cliente
+
+def info_producto(id_producto: int) -> object:
+    r = req.get('{}/api/products/{}'.format(api_productos_url, id_producto))
+    producto = r.json()
+    return producto
 
 @app.route('/cliente/<int:idCliente>', methods=['GET'])
 def getPedidoByIdCliente(idCliente):    
     pedido = Pedido.objects.get(cliente_id=idCliente).to_mongo().to_dict()
     pedido['cliente_id'] = info_cliente(idCliente)
     pedido.pop('_id', None)
+    productos = []
+    for producto in pedido['productos']:
+        producto_info =info_producto(producto['id'])
+        producto = producto_info
+        productos.append(producto)
+    pedido['productos'] = productos
     return jsonify(pedido), 200
 
 @app.route('/', methods=['POST'])
@@ -47,6 +58,12 @@ def allPedidos():
         cliente = info_cliente(pedido.cliente_id)
         pedido.cliente_id = cliente
         response.append(pedido)
+        productos = []
+        for producto in pedido['productos']:
+            producto_info =info_producto(producto['id'])
+            producto = producto_info
+            productos.append(producto)
+        pedido['productos'] = productos
     return jsonify(response), 200
     
 @app.route('/<string:codigoPedido>', methods=['DELETE'])
