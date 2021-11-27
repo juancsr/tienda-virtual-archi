@@ -20,7 +20,7 @@ services:
     image: api_clientes
     restart: on-failure:5
     environment:
-      - DB_HOST=mysql
+      - DB_HOST=prod_mysql
       - DB_USER=${MYSQL_USERNAME}
       - DB_PASSWORD=${MYSQL_PASSWORD}
       - DB_NAME=${MYSQL_DATABASE}
@@ -30,7 +30,7 @@ services:
   mysql:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
-    container_name: mysql
+    container_name: prod_mysql
     healthcheck: 
       test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
       timeout: 20s
@@ -39,7 +39,7 @@ services:
       - MYSQL_USER=${MYSQL_USERNAME}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
-      # MYSQL_ROOT_PASSWORD: root
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
       - "./api_clientes/users.sql:/docker-entrypoint-initdb.d/1.sql"
 
@@ -52,17 +52,18 @@ services:
       - mysql
     environment:
       - API_CLIENTES_URL=http://api_clientes:4000
-      - API_PRODUCTOS_URL=http://api_productos:5000
+      - API_PRODUCTOS_URL=https://productos.free.beeceptor.com
       - DB_NAME=${MONGO_INITDB_DATABASE}
-      - DB_HOST=mongo
+      - DB_HOST=prod_mongo
       - DB_PORT=27017
       - DB_USERNAME=${MONGO_INITDB_USERNAME}
       - DB_PASSWORD=${MONGO_INITDB_PASSWORD}
       - DB_AUTH=${MONGO_AUTHDB}
+      - PORT=4000
 
   mongo:
     image: mongo:latest
-    container_name: mongo
+    container_name: prod_mongo
     environment:
       - MONGO_DATA_DIR=/data/db:ro
       - MONGO_LOG_DIR=/var/log/mongodb
