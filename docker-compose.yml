@@ -48,8 +48,7 @@ services:
     container_name: api_pedidos
     depends_on:
       - mongo
-      # - api_clientes
-      - mysql
+      - api_clientes
     environment:
       - API_CLIENTES_URL=http://api_clientes:4000
       - API_PRODUCTOS_URL=https://productos.free.beeceptor.com
