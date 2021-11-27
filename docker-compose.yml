@@ -12,7 +12,7 @@ services:
     depends_on:
       - api_clientes
       - api_pedidos
-      - api_productos
+      # - api_productos
     
   api_clientes:
     build: ./api_clientes
@@ -21,9 +21,9 @@ services:
     restart: on-failure:5
     environment:
       - DB_HOST=mysql
-      - DB_USER=andres
-      - DB_PASSWORD=andres
-      - DB_NAME=clientes
+      - DB_USER=${MYSQL_USERNAME}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - DB_NAME=${MYSQL_DATABASE}
     depends_on:
       - mysql
 
@@ -36,10 +36,10 @@ services:
       timeout: 20s
       retries: 10
     environment:
-      MYSQL_USER: andres
-      MYSQL_PASSWORD: andres
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: clientes
+      - MYSQL_USER=${MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      # MYSQL_ROOT_PASSWORD: root
     volumes:
       - "./api_clientes/users.sql:/docker-entrypoint-initdb.d/1.sql"
 
@@ -52,13 +52,13 @@ services:
       - mysql
     environment:
       - API_CLIENTES_URL=http://api_clientes:4000
-      - API_PRODUCTOS_URL=api_productos:5000
-      - DB_NAME=pedidos
+      - API_PRODUCTOS_URL=http://api_productos:5000
+      - DB_NAME=${MONGO_INITDB_DATABASE}
       - DB_HOST=mongo
       - DB_PORT=27017
-      - DB_USERNAME=pedidos
-      - DB_PASSWORD=pedidos
-      - DB_AUTH=admin
+      - DB_USERNAME=${MONGO_INITDB_USERNAME}
+      - DB_PASSWORD=${MONGO_INITDB_PASSWORD}
+      - DB_AUTH=${MONGO_AUTHDB}
 
   mongo:
     image: mongo:latest
@@ -66,15 +66,16 @@ services:
     environment:
       - MONGO_DATA_DIR=/data/db:ro
       - MONGO_LOG_DIR=/var/log/mongodb
-      - MONGO_INITDB_ROOT_USERNAME=pedidos
-      - MONGO_INITDB_ROOT_PASSWORD=pedidos
-      - MONGO_INITDB_DATABASE=pedidos
-  api_productos:
-    image: nodejs
-    build: ./api_productos
-    container_name: api_productos
-    ports: 
-      - 3000:3000  
-    command: npm run dev
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+  
+  # api_productos:
+  #   image: nodejs
+  #   build: ./api_productos
+  #   container_name: api_productos
+  #   ports: 
+  #     - 3000:3000  
+  #   command: npm run dev
     
 
