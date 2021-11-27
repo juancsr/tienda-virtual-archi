@@ -46,4 +46,4 @@ $ docker-compose up
 
 ## Documentación
 
-Para la documentación como roles de usuario, historias de usuario y ADLs [Ver el README de tienda-virtual](tienda-virtual/README)
+Para la documentación como roles de usuario, historias de usuario y ADLs [Ver el README de tienda-virtual](tienda-virtual/README.md)
