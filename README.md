@@ -31,13 +31,14 @@ $ docker-compose up
 
 ## Variables de entorno
 
-* MONGO_INITDB_USERNAME: Nombre de usuario de la base de datos de mongo
-* MONGO_INITDB_PASSWORD: Contraseña de la base de datos de mongo
-* MONGO_INITDB_DATABASE: Nombre de la base de datos de mongo
-* MONGO_AUTHDB: Base de datos de autenticación (admin)
-* MYSQL_USERNAME: Nombre del usuario de MYSQL
-* MYSQL_PASSWORD: Contraseña del usuario de MYSQL
-* MYSQL_DATABASE: Nombre de la base de datos de myswl
+* **MONGO_INITDB_USERNAME**: Nombre de usuario de la base de datos de mongo
+* **MONGO_INITDB_PASSWORD**: Contraseña de la base de datos de mongo
+* **MONGO_INITDB_DATABASE**: Nombre de la base de datos de mongo
+* **MONGO_AUTHDB**: Base de datos de autenticación (colocar admin)
+* **MYSQL_USERNAME**: Nombre del usuario de MySQL
+* **MYSQL_PASSWORD**: Contraseña del usuario de MySQL
+* **MYSQL_DATABASE**: Nombre de la base de datos de MySQL
+* **MYSQL_ROOT_PASSWORD**: Contraseña del usuario de rooy de MySQL
 
 ### Lista de APIS
 * Clientes
