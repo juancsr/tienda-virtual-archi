@@ -7,28 +7,29 @@ services:
     environment: 
       - MONGO_DATA_DIR=/data/db:ro
       - MONGO_LOG_DIR=/var/log/mongodb
-      - MONGO_INITDB_ROOT_USERNAME=pedidos
-      - MONGO_INITDB_ROOT_PASSWORD=pedidos
-      - MONGO_INITDB_DATABASE=pedidos
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
     ports:
       - 27015:27017
     networks: 
       - back_end
   api:
     build: .
-    container_name: api_pedidos_dev
     ports:
       - 4001:4000
     depends_on:
       - db
     environment:
-      - API_CLIENTES_URL=api_clientes:4000
-      - DB_NAME=pedidos
+      - API_CLIENTES_URL=http://api_clientes_api_1:4000
+      - API_PRODUCTOS_URL=https://productos.free.beeceptor.com
+      - DB_NAME=${MONGO_INITDB_DATABASE}
       - DB_HOST=mongodb_backend_develop
       - DB_PORT=27017
-      - DB_USERNAME=pedidos
-      - DB_PASSWORD=pedidos
-      - DB_AUTH=admin
+      - DB_USERNAME=${MONGO_INITDB_USERNAME}
+      - DB_PASSWORD=${MONGO_INITDB_PASSWORD}
+      - DB_AUTH=${MONGO_AUTHDB}
+      - PORT=4000
     networks:
       - back_end
       

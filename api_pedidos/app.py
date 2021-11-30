@@ -3,6 +3,7 @@ import requests as req
 from db import initialize_db
 from models import Pedido
 import os
+import sys
 
 app = Flask(__name__)
 
@@ -20,27 +21,50 @@ app.config['MONGODB_SETTINGS'] = {
 
 initialize_db(app)
 
+def info_cliente(id_cliente: int) -> object:
+    r = req.get('{}/{}'.format(api_clientes_url, id_cliente))
+    cliente = r.json()['Client']
+    return cliente
+
+def info_producto(id_producto: int) -> object:
+    r = req.get('{}/api/products/{}'.format(api_productos_url, id_producto))
+    producto = r.json()
+    return producto
+
 @app.route('/cliente/<int:idCliente>', methods=['GET'])
-def getPedidoByIdCliente(idCliente):
-    pedido = Pedido.objects.get(cliente_id=idCliente).to_json()
-    # TODO: Do client request
-    # https://stackoverflow.com/questions/6386308/http-requests-and-json-parsing-in-python
-    # pedido = Pedido.objects.get(cliente_id=idCliente).to_mongo().to_dict()
-    # print(pedido)
-    # r = req.get('{}/{}'.format(api_clientes_url, idCliente))
-    # print(r.json())
-    # pedido.cliente_id = r.json()
-    return Response(pedido, mimetype="application/json", status=200)
+def getPedidoByIdCliente(idCliente):    
+    pedido = Pedido.objects.get(cliente_id=idCliente).to_mongo().to_dict()
+    pedido['cliente_id'] = info_cliente(idCliente)
+    pedido.pop('_id', None)
+    productos = []
+    for producto in pedido['productos']:
+        producto_info =info_producto(producto['id'])
+        producto = producto_info
+        productos.append(producto)
+    pedido['productos'] = productos
+    return jsonify(pedido), 200
 
 @app.route('/', methods=['POST'])
 def newPedido():
     body = request.get_json()
     Pedido(**body).save()
     return "Ok", 200
+
 @app.route('/', methods=['GET'])
 def allPedidos():
-    pedidos = Pedido.objects().to_json()
-    return Response(pedidos, mimetype="application/json", status=200)
+    pedidos = Pedido.objects().values_list()
+    response = []
+    for pedido in pedidos:
+        cliente = info_cliente(pedido.cliente_id)
+        pedido.cliente_id = cliente
+        response.append(pedido)
+        productos = []
+        for producto in pedido['productos']:
+            producto_info =info_producto(producto['id'])
+            producto = producto_info
+            productos.append(producto)
+        pedido['productos'] = productos
+    return jsonify(response), 200
     
 @app.route('/<string:codigoPedido>', methods=['DELETE'])
 def getPedidoByCodigo(codigoPedido):
@@ -49,4 +73,4 @@ def getPedidoByCodigo(codigoPedido):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True, port=4000)
+    app.run(host='0.0.0.0', debug=True, port=int(os.environ['PORT']))

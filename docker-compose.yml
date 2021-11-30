@@ -12,7 +12,7 @@ services:
     depends_on:
       - api_clientes
       - api_pedidos
-      - api_productos
+      # - api_productos
     
   api_clientes:
     build: ./api_clientes
@@ -20,28 +20,26 @@ services:
     image: api_clientes
     restart: on-failure:5
     environment:
-      - DB_HOST=mysql
-      - DB_USER=andres
-      - DB_PASSWORD=andres
-      - DB_NAME=clientes
+      - DB_HOST=prod_mysql
+      - DB_USER=${MYSQL_USERNAME}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - DB_NAME=${MYSQL_DATABASE}
     depends_on:
       - mysql
 
   mysql:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
-    container_name: mysql
+    container_name: prod_mysql
     healthcheck: 
       test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
       timeout: 20s
       retries: 10
     environment:
-      MYSQL_USER: andres
-      MYSQL_PASSWORD: andres
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: clientes
-    ports: 
-      - 33060:33060    
+      - MYSQL_USER=${MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes:
       - "./api_clientes/users.sql:/docker-entrypoint-initdb.d/1.sql"
 
@@ -50,33 +48,35 @@ services:
     container_name: api_pedidos
     depends_on:
       - mongo
-      # - api_clientes
-      - mysql
+      - api_clientes
     environment:
       - API_CLIENTES_URL=http://api_clientes:4000
-      - API_PRODUCTOS_URL=api_productos:5000
-      - DB_NAME=pedidos
-      - DB_HOST=mongo
+      - API_PRODUCTOS_URL=https://productos.free.beeceptor.com
+      - DB_NAME=${MONGO_INITDB_DATABASE}
+      - DB_HOST=prod_mongo
       - DB_PORT=27017
-      - DB_USERNAME=pedidos
-      - DB_PASSWORD=pedidos
-      - DB_AUTH=admin
+      - DB_USERNAME=${MONGO_INITDB_USERNAME}
+      - DB_PASSWORD=${MONGO_INITDB_PASSWORD}
+      - DB_AUTH=${MONGO_AUTHDB}
+      - PORT=4000
 
   mongo:
     image: mongo:latest
-    container_name: mongo
+    container_name: prod_mongo
     environment:
       - MONGO_DATA_DIR=/data/db:ro
       - MONGO_LOG_DIR=/var/log/mongodb
-      - MONGO_INITDB_ROOT_USERNAME=pedidos
-      - MONGO_INITDB_ROOT_PASSWORD=pedidos
-      - MONGO_INITDB_DATABASE=pedidos
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+  
   api_productos:
     image: nodejs
     build: ./api_productos
     container_name: api_productos
+    restart: always
     ports: 
-      - 81:3000
+      - 4000:4000
     command: npm run dev
     depends_on:
       - sqlite3
@@ -91,6 +91,5 @@ services:
       ports:
           - '9001:9001' # expose ports - HOST:CONTAINER
       #restart: unless-stopped
-
     
 
