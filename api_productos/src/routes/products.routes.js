@@ -6,8 +6,9 @@ import {
     deleteProductById,
     getTotalProducts,
     updateProductById,
+    createTable,
 } from "../controllers/products.controller";
-
+createTable();
 const router = Router();
 
 router.get("/products", getProducts);

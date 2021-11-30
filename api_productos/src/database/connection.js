@@ -1,5 +1,7 @@
-import sql from "mssql";
-import config from "../config";
+/*import sql from "mssql";*/
+//import config from "../config";
+const sqlite3 = require('sqlite3').verbose();
+const pool = new sqlite3.Database('./database/db.sqlite')
 
 export const dbSettings = {
   user: "testSa",
@@ -14,11 +16,12 @@ export const dbSettings = {
 
 export const getConnection = async () => {
   try {
-    const pool = await sql.connect(dbSettings);
+    const pool = new sqlite3.Database('./database/db.sqlite')
+    
     return pool;
   } catch (error) {
     console.error(error);
   }
 };
 
-export { sql };
+export { pool };

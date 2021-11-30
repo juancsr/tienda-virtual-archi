@@ -40,6 +40,8 @@ services:
       MYSQL_PASSWORD: andres
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: clientes
+    ports: 
+      - 33060:33060    
     volumes:
       - "./api_clientes/users.sql:/docker-entrypoint-initdb.d/1.sql"
 
@@ -74,7 +76,21 @@ services:
     build: ./api_productos
     container_name: api_productos
     ports: 
-      - 3000:3000  
+      - 81:3000
     command: npm run dev
+    depends_on:
+      - sqlite3
+  sqlite3:
+      container_name: sqlite3_container
+      image: nouchka/sqlite3:latest
+      stdin_open: true
+      tty: true
+      volumes:
+      #Modify following line
+          - "./root/db/sql_lite/sqlliteproductos.sql"
+      ports:
+          - '9001:9001' # expose ports - HOST:CONTAINER
+      #restart: unless-stopped
+
     
 

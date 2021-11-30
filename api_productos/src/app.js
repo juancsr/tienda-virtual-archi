@@ -9,7 +9,7 @@ const app = express();
 
 // settings
 app.set("port", config.port);
-
+/*Realizamos la creacion de la tabla, cuando se sube el servicio*/
 // Middlewares
 app.use(cors());
 app.use(morgan("dev"));

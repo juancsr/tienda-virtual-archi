@@ -16,7 +16,8 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "morgan": "^1.10.0",
-    "mssql": "^7.3.0"
+    "mssql": "^7.3.0",
+    "mysql": "^2.18.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",
