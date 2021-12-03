@@ -4,6 +4,7 @@ from db import initialize_db
 from models import Pedido
 import os
 import sys
+import json
 
 app = Flask(__name__)
 
@@ -31,6 +32,14 @@ def info_producto(id_producto: int) -> object:
     producto = r.json()
     return producto
 
+def update_producto(producto: object) -> bool:
+    url = ('{}/api/products/{}'.format(api_productos_url, producto['Id']))
+    r = req.put(url=url,data=json.dumps(producto), headers={'content-type': 'application/json'})
+    if r.status_code != 200:
+        print(r.status_code, r.json())
+        return False
+    return True
+
 @app.route('/cliente/<int:idCliente>', methods=['GET'])
 def getPedidoByIdCliente(idCliente):    
     pedido = Pedido.objects.get(cliente_id=idCliente).to_mongo().to_dict()
@@ -47,6 +56,14 @@ def getPedidoByIdCliente(idCliente):
 @app.route('/', methods=['POST'])
 def newPedido():
     body = request.get_json()
+    print(body)
+    for producto in body['productos']:
+        i_producto = info_producto(producto['id'])
+        print(i_producto)
+        if i_producto['quantity'] < producto['cantidad']:
+            return "No hay suficientes existencias de {} para crear el pedido".format(i_producto['name']), 404
+        i_producto['quantity'] = i_producto['quantity'] - producto['cantidad']
+        update_producto(i_producto)
     Pedido(**body).save()
     return "Ok", 200
 

@@ -2,8 +2,8 @@
 
 docker-compose up -d db
 
-API_CLIENTES_URL=http://localhost:4000 \
-API_PRODUCTOS_URL=https://productos.free.beeceptor.com \
+API_CLIENTES_URL=http://localhost/clientes \
+API_PRODUCTOS_URL=http://localhost/productos/ \
 DB_USERNAME=pedidos \
 DB_PASSWORD=pedidos \
 DB_NAME=pedidos \
