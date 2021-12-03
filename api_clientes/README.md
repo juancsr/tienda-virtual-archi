@@ -3,6 +3,7 @@
 #### Obtener todos los clientes
 
 [GET] localhost:4000/
+
 Salida
 
 ```json
@@ -44,6 +45,7 @@ Salida
 
 #### Obtener un cliente por ID
 [GET] localhost:4000/[ID]
+
 Salida
 ```json
 {
