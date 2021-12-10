@@ -52,3 +52,51 @@
 * Como un mensajero, quiero notificaciones de las nuevas entregas que debo hacer
 * Como un mensajero, quiero poder enviar y recibir mensajes con el comprador del producto y el vendedor
 * Como un mensajero, quiero tener control ver el tiempo que me queda para entregar el producto a tiempo.
+
+
+# Diagramas ADL
+
+## Comportamiento aplicaciones
+![comportamiento](images/Comportamiento_aplicaciones.PNG)
+
+## Cooperación aplicaciones
+![cooperacion](images/Cooperacion_aplicaciones.PNG)
+
+## Despacho pedidos
+![despacho](images/Cooperacion_despacho_pedidos.PNG)
+
+## Preparación pedidos
+![preparacion](images/cooperacion_preparacion_pedidos.PNG)
+
+## Procesos negocio
+![negocio](images/Cooperacion_procesos_negocios.PNG)
+
+## Estrucutra aplicaciones
+![estructura](images/Estructura_de_aplicaciones.PNG)
+
+## Estructura inforamción
+![informacion](images/Estructura_de_informacion.PNG)
+
+## Funciones de negocio
+![funciones](images/Funciones_de_Negocio.PNG)
+
+## Infraestructura
+![infraestructura](images/Infraestructura.PNG)
+
+## Organización
+![organizacion](images/Organizacion.PNG)
+
+## Proceso de negocio
+![proceso-negocio](images/Procesos_de_negocio.PNG)
+
+## Producto
+![producto](images/Producto.PNG)
+
+## Tienda por capas
+![capas](images/Tienda_por_capas.PNG)
+
+## Uso de aplicaciones
+![uso-apps](images/Uso_de_aplicacion.PNG)
+
+## Uso de infraestructura
+![infra](images/Uso_de_infraestructura.PNG)
